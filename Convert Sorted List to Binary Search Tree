@@ -1,0 +1,65 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+struct TreeNode* sortedListToBST(struct ListNode* head) {
+    
+   if(!head) return NULL;
+
+   int count = 0;
+
+   struct ListNode* p = head;
+
+   while(p)
+   {
+      count++;
+      p = p->next;
+   }
+
+   if(count == 1)
+   {
+      struct TreeNode* pRoot = malloc(sizeof(*pRoot));
+      pRoot->val = head->val;
+      pRoot->left = pRoot->right = NULL;
+      return pRoot;
+   }
+
+   int rootIndex = -1;
+
+   if(count % 2 == 0)rootIndex = count / 2;
+   else rootIndex = count / 2 + 1;
+
+   struct ListNode* p1_head = head;
+   
+   struct ListNode* p1_end = head;
+   struct ListNode* p2_head = NULL;
+
+   while(rootIndex > 2)
+   {
+      p1_end = p1_end->next;
+      rootIndex--;
+   }
+
+   struct TreeNode* pRoot = malloc(sizeof(*pRoot));
+   pRoot->left = pRoot->right = NULL;
+   pRoot->val = p1_end->next->val;
+
+   p2_head = p1_end->next->next;
+   p1_end->next = NULL;
+   
+   pRoot->left = sortedListToBST(p1_head);
+   pRoot->right = sortedListToBST(p2_head);
+
+   return pRoot; 
+}
