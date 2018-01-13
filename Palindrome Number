@@ -1,0 +1,53 @@
+#define INT_MIN -2147483648
+#define INT_MAX 2147483647
+
+bool isPalindrome(int x) {
+    
+    if(x < 0) return false;
+    if(x == 0) return true;
+    if(x < 10) return true;
+    if(x%10 == 0) return false;
+    
+    int count = 1;
+    
+    int temp = x;
+    
+    int div = temp/10;
+    
+    while(div != 0)
+    {
+        div = div/10;
+        count++;
+    }
+    
+    int y = 0;
+    int i = 0;
+    temp = x;
+    
+    while(count > 0)
+    {
+        int base = pow(10, count-1);
+        
+        if(temp < base)
+        {
+            count--;
+            i++;
+            continue;  // for example: 1001, escaple 0 in between
+        }
+        else if(temp < 10)
+        {
+            y += temp*pow(10, i);
+        }
+        else
+        {
+            y += temp/base*pow(10, i);
+        }
+        
+        temp = temp%base;
+        count--;
+        i++;
+    }
+    
+    if(x == y) return true;
+    return false;
+}
