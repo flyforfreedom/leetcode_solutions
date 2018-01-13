@@ -1,0 +1,81 @@
+typedef struct {
+  int maxSize;
+  int curSize;
+  int minValue;
+  int* data;
+} MinStack;
+
+void minStackCreate(MinStack *stack, int maxSize) {
+
+   if(maxSize <= 0) 
+   {
+        return;
+   }
+   //stack = malloc(sizeof(*stack));
+   if(stack){
+      stack->maxSize  = maxSize;
+      stack->curSize  = 0;
+      stack->minValue = 0; 
+      stack->data     = malloc(sizeof(int)*maxSize);
+   }
+}
+
+void minStackPush(MinStack *stack, int element) {
+   if(!stack) return;
+   
+   if(stack->maxSize > stack->curSize){
+      stack->data[stack->curSize] = element;
+      if(stack->curSize == 0){
+         stack->minValue = element;
+      }
+      else if(stack->minValue > element){
+         stack->minValue = element;
+      }
+      stack->curSize++;
+   }
+}
+
+void minStackPop(MinStack *stack) {
+     if(!stack) return;
+
+     if(stack->curSize > 0)
+     {
+        stack->curSize--;  
+        if(stack->minValue == stack->data[stack->curSize])
+        {
+            int minValue = stack->data[0];
+            for(int i = 1; i < stack->curSize; ++i)
+            {
+                if(minValue > stack->data[i])
+                {
+                    minValue = stack->data[i];
+                }
+            }
+            stack->minValue = minValue;
+        } //"warning: format not a string literal and no format arguments" if '}' omitted
+     }
+}
+
+int minStackTop(MinStack *stack) {
+     if(!stack) return 0;
+
+     if(stack->curSize > 0){
+        return *(stack->data+stack->curSize-1);
+     }
+}
+
+int minStackGetMin(MinStack *stack) {
+    if(!stack) return 0;
+
+    if(stack->curSize > 0){
+       return stack->minValue;
+    }
+}
+
+void minStackDestroy(MinStack *stack) {
+
+   if(stack){
+    if(stack->data)free(stack->data);
+    //free(stack);
+   }
+}
