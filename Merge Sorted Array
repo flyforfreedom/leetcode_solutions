@@ -1,0 +1,65 @@
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        
+        if(n == 0) return;
+        if(m == 0)
+        {
+            nums1 = nums2;
+            return;
+        }
+        
+        while(nums1.size() > m)
+        {
+            nums1.erase(nums1.begin() + m);
+        }
+        
+        while(nums2.size() > n)
+        {
+            nums2.erase(nums2.begin() + n);
+        }
+        
+        vector<int>::iterator iter_begin1 = nums1.begin();
+        vector<int>::reverse_iterator iter_rbegin1 = nums1.rbegin();
+        
+        vector<int>::iterator iter_begin2 = nums2.begin();
+        vector<int>::reverse_iterator iter_rbegin2 = nums2.rbegin();
+        
+        if(*iter_rbegin1 <= *iter_begin2)
+        {
+            for(iter_begin2 = nums2.begin(); iter_begin2 != nums2.end(); ++iter_begin2)
+            {
+                nums1.push_back(*iter_begin2);
+            }
+        }
+        else if(*iter_begin1 > *iter_rbegin2)
+        {
+            for(iter_rbegin2 = nums2.rbegin(); iter_rbegin2 != nums2.rend(); ++iter_rbegin2)
+            {
+                nums1.insert(nums1.begin(), *iter_rbegin2);
+            }
+        }
+        else
+        {
+            while(iter_begin2 != nums2.end())
+            {
+                while(iter_begin1 != nums1.end() && *iter_begin1 <= *iter_begin2 )
+                {
+                    iter_begin1++;
+                }
+                if(iter_begin1 == nums1.end())
+                {
+                    nums1.push_back(*iter_begin2);
+                }
+                else
+                {
+                    nums1.insert(iter_begin1, *iter_begin2);
+                }
+                
+                iter_begin2++;   
+            }
+        }
+        
+        cout << "kao" << endl;
+    }
+};
