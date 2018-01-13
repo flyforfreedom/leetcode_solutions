@@ -1,0 +1,32 @@
+int majorityElement(int* nums, int numsSize) {
+   
+    if(!nums || numsSize <=0) return -1;
+    
+    if(numsSize <=2) return nums[0];
+    
+    int mje = nums[0];
+    int count    = 1;
+    
+    for(int i = 1; i < numsSize; ++i)
+    {
+        if(nums[i] == mje) count++;
+        else count--;
+ 
+        if(count == 0) 
+        {
+            mje = nums[i];
+            count = 1;
+        }
+    }
+    
+    if(count > 0)
+    {
+        for(int i = 0; i < numsSize; ++i)
+        {
+            if(nums[i] == mje)count++;
+        }
+        if(count >= numsSize/2) return mje;
+    }
+    
+    return -1;
+}
