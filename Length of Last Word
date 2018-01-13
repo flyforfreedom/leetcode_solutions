@@ -1,0 +1,45 @@
+int lengthOfLastWord(char* s) {
+    
+    if(!s) return 0;
+    
+    int len = strlen(s);
+    
+    if(len == 0) return 0;
+    if(len == 1)
+    {
+        if(*s != ' ') return 1;
+        else return 0;
+    }
+    
+    printf("get here, len: %d\n", len);
+    
+    char* pEnd = s + len -1;
+    
+    while(pEnd > s && *pEnd == ' ')
+    {
+        pEnd--;
+        len--;
+        
+        if(pEnd == s)
+        {
+            if(*pEnd != ' ') return 1;
+            else return 0;
+        }
+    }
+    
+    while(pEnd >= s)
+    {
+        if(*pEnd == ' ')
+        {
+            printf("return here\n");
+            return len - (pEnd - s) - 1;
+        }
+        else if(pEnd == s)
+        {
+            return len;
+        }
+        pEnd--;
+    }
+    
+    return 0;
+}
