@@ -1,0 +1,144 @@
+class TrieNode {
+public:
+    // Initialize your data structure here.
+    TrieNode(char c = ' ') {
+        
+        m_c = c;
+        bLeaf = false;
+ 
+        for(int i = 0; i < 26; i++)
+        {
+            childNodes[i] = NULL;
+        }
+    }
+    
+    TrieNode* getCharPointer(char c)
+    {
+        return childNodes[c-97];
+    }
+    
+    TrieNode* setCharPointer(TrieNode* node, char c)
+    {
+        childNodes[c-97] = node;
+    }
+    
+    bool isLeaf()
+    {
+        return bLeaf;
+    }
+    
+    void setLeaf()
+    {
+        bLeaf = true;
+    }
+    
+private:
+    char m_c;
+    bool bLeaf;
+    TrieNode* childNodes[26];
+};
+
+class Trie {
+public:
+    Trie() {
+        root = new TrieNode();
+    }
+
+    // Inserts a word into the trie.
+    void insert(string word) {
+        
+        TrieNode* p = root;
+        
+        string::iterator it = word.begin();
+        
+        while(it != word.end())
+        {
+            TrieNode* temp = p->getCharPointer(*it); 
+            if(temp) 
+            {
+                p = temp;
+                ++it;
+            }
+            else
+            {
+                break;
+            }
+        }
+        
+        if(it == word.end())
+        {
+            p->setLeaf();
+            return;
+        }
+        while(it != word.end())
+        {
+            TrieNode* node = new TrieNode(*it);
+            p->setCharPointer(node, *it);
+            p = node;
+            ++it;
+        }
+        
+        p->setLeaf();
+    }
+
+    // Returns if the word is in the trie.
+    bool search(string word) {
+        
+        TrieNode* p = root;
+        
+        string::iterator it = word.begin();
+        
+        while(it != word.end())
+        {
+            TrieNode* temp = p->getCharPointer(*it); 
+            if(temp) 
+            {
+                p = temp;
+                ++it;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        if(p->isLeaf()) return true; 
+        
+        return false;
+    }
+
+    // Returns if there is any word in the trie
+    // that starts with the given prefix.
+    bool startsWith(string prefix) {
+        
+        if(prefix == "") return true;
+        
+        TrieNode* p = root;
+        
+        string::iterator it = prefix.begin();
+        
+        while(it != prefix.end())
+        {
+            TrieNode* temp = p->getCharPointer(*it); 
+            if(temp) 
+            {
+                p = temp;
+                ++it;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+private:
+    TrieNode* root;
+};
+
+// Your Trie object will be instantiated and called as such:
+// Trie trie;
+// trie.insert("somestring");
+// trie.search("key");
