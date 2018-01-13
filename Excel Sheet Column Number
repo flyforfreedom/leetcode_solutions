@@ -1,0 +1,18 @@
+int titleToNumber(char* s) {
+    
+    if(!s) return 0;
+    
+    int index = strlen(s) - 1;
+    
+    int num = 0;
+    int i   = 0;
+    
+    while(index >= 0)
+    {
+        num += (s[index] - 64)*pow(26, i);
+        i++;
+        index--;
+    }
+    
+    return num;
+}
