@@ -1,0 +1,62 @@
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    vector<Interval> merge(vector<Interval>& intervals) {
+        
+       vector<Interval> v_result;
+
+       if(intervals.size() == 0) return v_result;
+      
+       vector<int> v_start;
+       vector<int> v_end;
+       vector<Interval>::iterator iter = intervals.begin();
+
+       for(; iter != intervals.end(); ++iter)
+       {
+          v_start.push_back(iter->start);
+          v_end.push_back(iter->end);
+       }
+
+       sort(v_start.begin(), v_start.end(), std::less<int>());
+       sort(v_end.begin(), v_end.end(), std::less<int>());
+
+       vector<int>::iterator s_iter = v_start.begin();
+       vector<int>::iterator s_iter_1 = v_start.begin();
+       vector<int>::iterator e_iter = v_end.begin();
+
+       s_iter++;
+       
+       for(; s_iter != v_start.end() && e_iter != v_end.end(); ++s_iter, ++e_iter)
+       {
+          if(*s_iter > *e_iter)
+          {
+             Interval iv;
+
+             iv.start = *(s_iter_1);
+             iv.end = *(e_iter);
+
+             v_result.push_back(iv);
+
+             s_iter_1 = s_iter;
+          }
+
+       }
+ 
+      Interval iv;
+      iv.start = *s_iter_1;
+      iv.end = *e_iter;
+
+      v_result.push_back(iv);
+
+
+      return v_result;
+    }
+};
