@@ -1,0 +1,42 @@
+bool isSameChar(char** strs, int strsSize, int index)
+{
+    for(int i = 1; i < strsSize; ++i)
+    {
+        if(strs[i][index] != strs[0][index]) return false;
+    }
+    
+    return true;
+}
+
+char* longestCommonPrefix(char** strs, int strsSize) {
+ 
+    if(!strs || strsSize <= 0)
+    {
+        char* p = malloc(sizeof(char)*1);
+        p[0] = 0;
+        return p;
+    }
+    
+    int index = 0;
+    
+    int len = strlen(strs[0]);
+    
+    while(index < len)
+    { 
+        if(isSameChar(strs, strsSize, index))
+        {
+            index++;
+        }
+        else
+        {
+            break;
+        }
+    }
+    
+    char* prefix = malloc(sizeof(char)*(index+1));
+    prefix[index] = 0;
+    
+    strncpy(prefix, strs[0], index);
+ 
+    return prefix;   
+}
