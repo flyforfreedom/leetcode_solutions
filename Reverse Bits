@@ -1,0 +1,18 @@
+uint32_t reverseBits(uint32_t n) {
+ 
+    int len = sizeof(n)*8-1;
+    uint32_t tmp = 0;
+    uint32_t ret = 0;
+    uint32_t one = 1;
+     
+    while(len>=0){
+         tmp = 0;
+         tmp = n & one;
+         n   = n >> 1;
+         tmp = tmp << len;
+         ret |= tmp;
+         len--;
+     }
+  
+    return ret;
+}
