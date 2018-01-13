@@ -1,0 +1,53 @@
+#define MAX_INT 2147483647
+#define MIN_INT -2147483648
+
+int reverse(int x) {
+       
+   int i = 0;
+
+   while(x >= pow(10, i) || x <= -pow(10, i))
+   {
+      i++;
+   }
+   
+   if(1 == i) return x;
+   
+   printf("i is: %d\n", i);
+
+   bool bNegative = false;
+
+   if(x < 0) bNegative = true;
+
+   int sum = 0;
+
+   int j = 0;
+   
+   while(j<i)
+   {
+      if((x%10 > 2 || x%10 < -2) && (i-j-1>=9)) return 0; // Avoid pow() overflow
+      
+      int v = x%10*pow(10, i-j-1);
+      
+      x /= 10;
+
+      if(bNegative)
+      {
+         if(sum < 0 && (v < MIN_INT - sum)) // Negative overflow 
+         {
+            return 0;
+         }
+      }
+      else
+      {
+         if(sum > 0 && (v > MAX_INT - sum)) // Positive overflow
+         {
+            return 0;
+         }
+      }
+
+      sum += v;
+      j++;
+   }
+
+   return sum;
+}
