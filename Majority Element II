@@ -1,0 +1,108 @@
+/**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+ 
+struct kv{
+   int key;
+   int value;
+};
+
+int* majorityElement(int* nums, int numsSize, int* returnSize) {
+
+    if(!nums) return NULL;
+    
+    struct kv mj_kv[3];
+    
+    mj_kv[0].value = -1;
+    mj_kv[1].value = -1;
+    mj_kv[2].value = -1;
+    
+    for(int  i = 0; i < numsSize; ++i)
+    {
+        bool bReplace = true;
+        
+        for(int j = 0; j < 3; ++j)
+        {
+            if(mj_kv[j].value == -1)
+            {
+                printf("key is:%d\n", nums[i]);
+                mj_kv[j].key = nums[i];
+                mj_kv[j].value = 1;
+                bReplace = false;
+                break;
+            }
+            else if(mj_kv[j].key == nums[i])
+            {
+                printf("existing:%d\n", nums[i]);
+                mj_kv[j].value++;
+                bReplace = false;
+                break;
+            }
+            else if(mj_kv[j].value == 0)
+            {
+                for(int k = 0; k < 3; ++k)
+                {
+                    if(mj_kv[k].key == nums[i])
+                    {
+                        mj_kv[k].value++;
+                        bReplace = false;
+                        goto BREAK;
+                    }
+                }
+                mj_kv[j].key = nums[i];
+                mj_kv[j].value = 1;
+                bReplace = false;
+                
+BREAK:
+                break;
+            }
+        }
+        
+        if(bReplace)
+        {
+            for(int j = 0; j < 3; ++j)
+            {
+                mj_kv[j].value--;
+            }
+        }
+    }
+    
+    int count = 0;
+    
+    for(int j = 0; j < 3; ++j)
+    {
+        if(mj_kv[j].value > 0)
+        {
+            mj_kv[j].value = 0;
+            
+            for(int i = 0; i < numsSize; ++i)
+            {
+                if(nums[i] == mj_kv[j].key) mj_kv[j].value++;
+            }
+        }
+    }
+    
+    count = 0;
+    
+    for(int j = 0; j < 3; ++j)
+    {
+        if(mj_kv[j].value > numsSize/3)count++;
+    }
+    
+    if(count == 0) return NULL;
+
+    int* p = malloc(sizeof(int)*count);
+    
+    for(int j = 0, k = 0; j < 3; ++j)
+    {
+        if(mj_kv[j].value > numsSize/3)
+        {
+            p[k++] = mj_kv[j].key;
+        }
+    }
+    
+    *returnSize = count;
+    
+    return p;
+}
