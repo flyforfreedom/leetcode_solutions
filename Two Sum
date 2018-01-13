@@ -1,0 +1,53 @@
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        
+        vector<int> v_ret;
+         
+        vector<int> v_temp = nums;
+        sort(v_temp.begin(), v_temp.end());
+        
+        vector<int>::iterator iter1 = v_temp.begin();
+        vector<int>::iterator iter2 = v_temp.begin();
+        
+        while((iter2 + 1) != v_temp.end())
+        {
+            iter2++;
+        }
+        
+        while(iter1 != iter2)
+        {
+            if(*iter1 + *iter2 == target)
+            {
+                int num1 = *iter1;
+                int num2 = *iter2;
+                
+                int index = 1;
+                
+                vector<int>::iterator iter = nums.begin();
+                
+                while(iter != nums.end())
+                {
+                    if(*iter == num1 || *iter == num2)
+                    {
+                        v_ret.push_back(index);
+                    }
+                    index++;
+                    iter++;
+                }
+  
+                return v_ret;
+            }
+            else if(*iter1 + *iter2 < target)
+            {
+                iter1++;
+            }
+            else
+            {
+                iter2--;
+            }
+        }
+        
+        return v_ret;
+    }
+};
