@@ -1,0 +1,76 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        if(!root) return NULL;
+        
+        vector<TreeNode*> v_path_p = findNodePath(root, p);
+        vector<TreeNode*> v_path_q = findNodePath(root, q);
+        
+        vector<TreeNode*>::reverse_iterator v_p_iter = v_path_p.rbegin();
+        vector<TreeNode*>::reverse_iterator v_q_iter = v_path_q.rbegin();
+        
+        for(; v_p_iter != v_path_p.rend() && v_q_iter != v_path_q.rend(); )
+        {
+            if(*v_p_iter == *v_q_iter)
+            {
+                if(v_p_iter + 1 == v_path_p.rend())
+                {
+                    return *v_p_iter;
+                }
+                else if(v_q_iter + 1 == v_path_q.rend())
+                {
+                    return *v_q_iter;
+                }
+                else
+                {
+                    v_p_iter++;
+                    v_q_iter++;
+                }
+            }
+            else
+            {
+                v_p_iter--;
+                return *v_p_iter;
+            }
+        }
+    }
+    
+    vector<TreeNode*> findNodePath(TreeNode* root, TreeNode* p)
+    {
+        vector<TreeNode*> v_path;
+        
+        if(!root) return v_path;
+        
+        if(root == p)
+        {
+            v_path.push_back(root);
+            return v_path;
+        }
+        else
+        {
+            v_path = findNodePath(root->left, p);
+            
+            if(v_path.size() != 0) //necessary to compare
+            {
+                v_path.push_back(root);
+                return v_path;
+            }
+            else
+            {
+                v_path = findNodePath(root->right, p);
+                if(v_path.size() != 0) v_path.push_back(root); //necessary to compare
+                return v_path;
+            }
+        }
+    }
+};
