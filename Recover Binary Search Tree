@@ -1,0 +1,69 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        
+        if(!root) return;
+        
+        TreeNode* pIncorrect  = NULL;
+        TreeNode* subseq_min  = NULL;
+        TreeNode* prevnode    = NULL;
+        
+        bool bFirstFound = false;
+        
+        stack<TreeNode*> s;
+        
+        s.push(root);
+        TreeNode* pNode = s.top();
+        
+        while(!s.empty())
+        {
+            while(pNode && pNode->left)
+            {
+                s.push(pNode->left);
+                pNode = pNode->left;
+            }
+            
+            pNode = s.top();
+            
+            if(pNode)
+            {
+                if(!prevnode) prevnode = pNode;
+                
+                if(pNode->val < prevnode->val && !bFirstFound)
+                {
+                    pIncorrect = prevnode;
+                    subseq_min = pNode;
+                    bFirstFound = true;
+                }
+                else if(pNode->val < prevnode->val)
+                {
+                    subseq_min = pNode;
+                }
+                
+                prevnode = pNode;
+               
+                s.pop();
+                
+                if(pNode->right) s.push(pNode->right);
+                
+                pNode = pNode->right;
+            }
+        }
+        
+        if(pIncorrect != subseq_min)
+        {
+            int val = pIncorrect->val;
+            pIncorrect->val = subseq_min->val;
+            subseq_min->val = val;
+        }
+    }
+};
