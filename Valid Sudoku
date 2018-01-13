@@ -1,0 +1,190 @@
+bool isValidRow(char** board, int row, int col, int boardColSize)
+{
+    if(!board) return false;
+    
+    if(board[row][col] == '.') return true;
+    
+    for(int i = 0; i < boardColSize; ++i)
+    {
+        if(i == col) continue;
+        
+        if(board[row][i] == board[row][col]) 
+        {
+            printf("return false\n");
+            return false;
+        }
+    }
+    
+    return true;
+}
+
+bool isValidCol(char** board, int row, int col, int boardRowSize)
+{
+    if(!board) return false;
+    
+    if(board[row][col] == '.') return true;
+    
+    for(int i = 0; i < boardRowSize; ++i)
+    {
+        if(i == row) continue;
+        
+        if(board[i][col] == board[row][col])
+        {
+            printf("return false\n");
+            return false;
+        }
+    }
+    
+    return true;    
+}
+
+bool isValidCubic(char** board, int boardRowSize, int boardColSize, int row, int col)
+{
+    if(!board) return false;
+    
+    //if(board[row][col] == '.') return true;
+    char* s = malloc(sizeof(char)*9);
+    for(int i = 0; i < 9; ++i) s[i] = 0;
+    
+    if(board[row][col] != '.') s[ board[row][col] - '1' ] = 1;
+    
+    int left_top_row = row - 1;
+    int left_top_col = col - 1;
+    
+    if(left_top_row >= 0 && left_top_col >= 0)
+    {
+        if(board[left_top_row][left_top_col] == '.'){}
+        
+        else if(s[ board[left_top_row][left_top_col] - '1'] != 0)
+        {
+            printf("return false 1\n");
+            return false;
+        }
+        else 
+        s[board[left_top_row][left_top_col] - '1'] = board[left_top_row][left_top_col];
+    }
+    
+    int left_mid_row = row;
+    int left_mid_col = col - 1;
+    
+    if(left_mid_col >= 0)
+    {
+        if(board[left_mid_row][left_mid_col] == '.'){}
+        
+        else if(s[ board[left_mid_row][left_mid_col] - '1'] != 0)
+        {
+            printf("return false 2\n");
+            return false;
+        }
+        else s[board[left_mid_row][left_mid_col] - '1'] = board[left_mid_row][left_mid_col];
+    }    
+    
+    int left_bottom_row = row + 1;
+    int left_bottom_col = col - 1;
+    
+    if(left_bottom_row < boardRowSize && left_bottom_col >= 0)
+    {
+        if(board[left_bottom_row][left_bottom_col] == '.'){}
+        else if(s[ board[left_bottom_row][left_bottom_col] - '1'] != 0)
+        {
+            printf("return false 3\n");
+            return false;
+        }
+        else s[board[left_bottom_row][left_bottom_col] - '1'] = board[left_bottom_row][left_bottom_col];
+    }       
+    
+    int right_top_row = row - 1;
+    int right_top_col = col + 1;
+    
+    if(right_top_row >= 0 && right_top_col < boardColSize)
+    {
+        if(board[right_top_row][right_top_col] == '.'){}
+        else if(s[ board[right_top_row][right_top_col] - '1'] != 0)
+        {
+            printf("return false 4\n");
+            return false;
+        }
+        else s[board[right_top_row][right_top_col] - '1'] = board[right_top_row][right_top_col];
+    }      
+    
+    int right_mid_row = row;
+    int right_mid_col = col + 1;
+    
+    if(right_mid_col < boardColSize)
+    {
+        if(board[right_mid_row][right_mid_col] == '.'){}
+        else if(s[ board[right_mid_row][right_mid_col] - '1'] != 0)
+        {
+            printf("return false 5\n");
+            return false;
+        }
+        else s[board[right_mid_row][right_mid_col] - '1'] = board[right_mid_row][right_mid_col];
+    }  
+    
+    int right_bottom_row = row + 1;
+    int right_bottom_col = col + 1;
+    
+    if(right_bottom_row < boardRowSize && right_bottom_col < boardColSize)
+    {
+        if(board[right_bottom_row][right_bottom_col] == '.'){}
+        
+        else if(s[ board[right_bottom_row][right_bottom_col] - '1'] != 0)
+        {
+            printf("return false 6\n");
+            return false;
+        }
+        else s[board[right_bottom_row][right_bottom_col] - '1'] = board[right_bottom_row][right_bottom_col];
+    }      
+    
+    int mid_up_row = row - 1;
+    int mid_up_col = col;
+
+    if(mid_up_row >= 0 )
+    {
+        if(board[mid_up_row][mid_up_col] == '.'){}
+        else if(s[ board[mid_up_row][mid_up_col] - '1'] != 0)
+        {
+            printf("return false 7\n");
+            return false;
+        }
+        else s[board[mid_up_row][mid_up_col] - '1'] = board[mid_up_row][mid_up_col];
+    }   
+    
+    int mid_bottom_row = row + 1;
+    int mid_bottom_col = col;
+    
+    if(mid_bottom_row < boardRowSize)
+    {
+        if(board[mid_bottom_row][mid_bottom_col] == '.'){}
+        else if(s[ board[mid_bottom_row][mid_bottom_col] - '1'] != 0)
+        {
+            printf("return false 8\n");
+            return false;
+        }
+        else s[board[mid_bottom_row][mid_bottom_col] - '1'] = board[mid_bottom_row][mid_bottom_col];
+    } 
+    
+    return true;
+}
+
+bool isValidSudoku(char** board, int boardRowSize, int boardColSize) 
+{
+    for(int i = 0; i < boardRowSize; i++)
+    {
+        for(int j = 0; j < boardColSize; j++)
+        {
+            bool bRet = isValidRow(board, i, j, boardColSize) && 
+                        isValidCol(board, i, j, boardRowSize);
+                        
+            if(!bRet) return false;
+        }
+    }
+ 
+    for(int i = 1; i < boardRowSize; i = i+3)
+    {
+        for(int j = 1; j < boardColSize; j = j+3)
+        {
+            if(!isValidCubic(board, boardRowSize, boardColSize, i, j)) return false;
+        }
+    }
+}
