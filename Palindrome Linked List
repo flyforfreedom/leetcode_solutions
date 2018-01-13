@@ -1,0 +1,95 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+bool isPalindrome(struct ListNode* head) {
+       
+   if(!head || !head->next) return true;
+      
+   int count = 0;
+
+   struct ListNode* p = head;
+
+   while(p)
+   {
+      count++;
+      p = p->next;
+   }     
+      
+   struct ListNode* p1_begin = head;
+   struct ListNode* p1_end = NULL;
+   struct ListNode* p2_begin = NULL;
+   struct ListNode* p2_end = NULL;
+   
+   p = head;
+   
+   count = count / 2;
+
+   while(count-- > 1)
+   {
+      p = p->next;
+   }
+   
+   p1_end = p;
+
+   if(count%2 == 0)
+   {
+      p2_begin = p->next;
+   }
+   else
+   {
+      p2_begin = p->next->next;
+   }
+
+   struct ListNode* prev = NULL;
+
+   p = p2_begin;
+
+   while(p)
+   {
+      struct ListNode* pnext = p->next;
+      p->next = prev;
+      prev = p;
+      p = pnext;
+   }
+
+   p2_begin = prev;
+
+   struct ListNode* p1 = p1_begin;
+   struct ListNode* p2 = p2_begin;
+
+   bool bPalindrome = true;
+   
+   while(p1 && p2)
+   {
+      if(p1->val != p2->val)
+      {
+         bPalindrome = false;
+         break;
+      }
+      p1 = p1->next;
+      p2 = p2->next;
+   }
+
+   prev = NULL;
+
+   p = p2_begin;
+
+   while(p)
+   {
+      struct ListNode* pnext = p->next;
+      p->next = prev;
+      prev = p;
+      p = pnext;
+   }
+
+   p2_begin = prev;
+
+   if(count%2 == 0)p1_end->next = p2_begin;
+   else p1_end->next->next = p2_begin;
+
+   return bPalindrome;
+}
