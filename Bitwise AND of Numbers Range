@@ -1,0 +1,35 @@
+int rangeBitwiseAnd(int m, int n) {
+    
+    if(m == 0) return 0;
+    if(m > n) return 0;
+    else if(m == n) return m&n;
+
+    int bits = sizeof(n)*8;
+    bits -= 2;
+        
+    int itest = 0;
+    
+    int sum = 0;
+        
+    while(bits > 0)
+    {
+        itest = 1 << bits;
+            
+        if((itest & m) == itest && (itest & n) == itest)
+        {
+            sum |= itest;
+        }
+        else if((itest & n) == itest)
+        {
+            return sum;
+        }
+        else if((itest & m) == itest)
+        {
+            return sum;
+        }
+            
+        bits--;
+    } 
+    
+    return sum;
+}
