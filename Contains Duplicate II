@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        
+        if(k == 0) return false;
+        
+        set<int> k_set;
+        
+        vector<int>::iterator iter;
+        
+        for(iter = nums.begin(); iter != nums.end(); ++iter)
+        {
+            if(k_set.find(*iter) != k_set.end()) 
+            {
+                return true;
+            }
+            else if(k_set.size() == k)
+            {
+                k_set.erase(*(iter-k));
+                k_set.insert(*iter);
+            }
+            else
+            {
+                k_set.insert(*iter);
+            }
+        }
+        
+        return false;
+    }
+};
