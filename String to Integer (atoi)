@@ -1,0 +1,102 @@
+int myAtoi(char* str) {
+ 
+    if(!str) return 0;
+    
+    int len = strlen(str);
+    
+    int index1 = 0;
+    int index2 = len - 1;
+    
+    while(index1 < index2)
+    {
+        if(str[index1] == ' ') index1++;
+        else break;
+    }
+    
+    if(index1 == index2)
+    {
+        if('0' <= str[index2] && '9' >= str[index2]) return str[index2] - 48;
+        else return 0;
+    }
+    
+    while(index2 > index1)
+    {
+        if(str[index2] == ' ') index2--;
+        else break;
+    }
+    
+    int iret = 0;
+    int round = 0;
+    bool negative = false;
+    
+    if(str[index1] == '-')negative = true;
+    
+    while(index2 > index1)
+    {
+        if('0' <= str[index2] && '9' >= str[index2])
+        {
+            if(negative)
+            {
+                if ((iret < 0) && ((str[index2]-48)*pow(10, round) < -2147483648 - iret))
+                {
+                    iret = -2147483648;
+                    round++;
+                }
+                else
+                { 
+                    iret = iret - (str[index2]-48)*pow(10, round);
+                    round++;
+                }
+            }
+            else
+            {
+                if ((iret > 0) && ((str[index2]-48)*pow(10, round) > 2147483647 - iret))
+                {
+                   iret = 2147483647;
+                   round++;
+                }
+                else
+                {
+                  iret = iret + (str[index2]-48)*pow(10, round);
+                  round++;
+                }
+            }
+        }
+        else
+        {
+            iret = 0;
+            round = 0;
+        }
+        index2--;
+    }
+
+    if('0' <= str[index2] && '9' >= str[index2])
+    {
+        if(negative)
+        {
+            if ((iret < 0) && ((str[index2]-48)*pow(10, round) < -2147483648 - iret))
+            {
+                iret = -2147483648;
+            }
+            else
+            {
+                iret = iret - (str[index2]-48)*pow(10, round);
+            }
+        }
+        else
+        {
+            if ((iret > 0) && ((str[index2]-48)*pow(10, round) > 2147483647 - iret))
+            {
+                iret = 2147483647;
+            }
+            else
+            {
+                iret = iret + (str[index2]-48)*pow(10, round);
+            }
+        }
+    }
+    else if(str[index2] == '+' || str[index2] == '-'){}
+    else return 0;
+    
+    return iret;
+}
