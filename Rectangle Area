@@ -1,0 +1,73 @@
+#define MAX_INT 2147483647
+#define MIN_INT -2147483648
+
+int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
+    
+    int x1 = A;
+    if(C < x1) x1 = C;
+    if(E < x1) x1 = E;
+    if(G < x1) x1 = G;
+    
+    printf("x1 is:%d\n", x1);
+    
+    int x2 = A;
+    if(C > x2) x2 = C;
+    if(E > x2) x2 = E;
+    if(G > x2) x2 = G;
+
+    printf("x2 is:%d\n", x2);
+    
+    int w1 = A - C;
+    if(w1 < 0) w1 = -w1;
+    
+    int w2 = E - G;
+    if(w2 < 0) w2 = -w2;
+    
+    int y1 = B;
+    if(D < y1) y1 = D;
+    if(F < y1) y1 = F;
+    if(H < y1) y1 = H;
+    
+    printf("y1 is:%d\n", y1);
+    
+    int y2 = B;
+    if(D > y2) y2 = D;
+    if(F > y2) y2 = F;
+    if(H > y2) y2 = H;
+    
+    printf("y2 is:%d\n", y2);
+    
+    int h1 = B - D;
+    if(h1 < 0) h1 = -h1;
+    
+    printf("h1 is:%d\n", h1);
+    
+    int h2 = F - H;
+    if(h2 < 0) h2 = -h2;
+    
+    printf("h2 is:%d\n", h2);
+    
+    int intersec_x = 0;
+    
+    if( ((x2 > 0) && (-x1 > MAX_INT - x2)) || ((x2 < 0) && (-x1 < MIN_INT - x2)) )// Avoid overflow or underflow
+    {}
+    else 
+    {
+        intersec_x = w1 + w2 - (x2 - x1);
+    }
+
+    int intersec_y = 0;
+    
+    if( ((y2 > 0) && (-y1 > MAX_INT - y2)) || ((y2 < 0) && (-y1 < MIN_INT - y2)) )// Avoid overflow or underflow
+    {}
+    else 
+    {
+        intersec_y = h1 + h2 - (y2 - y1);
+    }
+    
+    if(intersec_x <= 0  || intersec_y <= 0) return w1*h1 + w2*h2;
+    
+    printf("w1:%d, w2:%d,intersec_x is:%d, intersec_y is:%d\n", w1, w2, intersec_x, intersec_y);
+    
+    return w1*h1 + w2*h2 - intersec_x*intersec_y;
+}
