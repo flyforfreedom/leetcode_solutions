@@ -1,0 +1,40 @@
+class Solution {
+public:
+    bool isHappy(int n) {
+        
+        if(n < 0) n = -n;
+        
+        if(n == 0) return false;
+        
+        if(n/10 == 0 && (n == 1 || n == 7)) return true;
+        else if(n/10 == 0) return false;
+        
+        int m = 0;
+        int prev_sum = 0;
+        
+        while(n/10 != 0)
+        {
+            int mod = n%10;
+            
+            m += pow(mod, 2);
+            
+            if(n/10 < 10)
+            {
+                m += pow(n/10, 2);
+                
+                if(m == 1) return true;
+                else if(m == prev_sum) return false;
+                
+                prev_sum = m;
+                n = m;
+                m = 0;
+                
+                continue;
+            }
+            
+            n = n/10;
+        }
+        
+        return false;
+    }
+};
