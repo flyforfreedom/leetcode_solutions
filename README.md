@@ -1,1 +1,1 @@
-# leetcode_solutions
+LeetCode sulotions implemented in c/c++
