@@ -1,0 +1,16 @@
+int hammingWeight(uint32_t n) {
+    
+    int len = sizeof(n)*8;
+    
+    int num = 0;
+    
+    while(len--){
+        if (n & 1)
+         {
+             num++;
+         }
+         n = n >> 1;
+    }
+    
+    return num;
+}
