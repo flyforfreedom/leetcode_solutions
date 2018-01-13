@@ -1,0 +1,47 @@
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        
+        if(s.size() == 0 && t.size() == 0) return true;
+        else if(s.size() == 0) return false;
+        else if(t.size() == 0) return false;
+        
+        char s_hash[256]; 
+        char t_hash[256]; 
+        
+        memset(s_hash, 0, 256);
+        memset(t_hash, 0, 256);
+        
+        string::iterator it_s = s.begin(); 
+        string::iterator it_t = t.begin(); 
+        
+        for(; it_s!=s.end(); ++it_s, ++it_t)
+        {
+            if(s_hash[*it_s] == 0)
+            {
+                s_hash[*it_s] = *it_t;
+            }
+            else if(s_hash[*it_s] != *it_t)
+            {
+                return false;
+            }
+        }
+        
+        it_s = s.begin(); 
+        it_t = t.begin(); 
+        
+        for(; it_t!=t.end(); ++it_s, ++it_t)
+        {
+            if(t_hash[*it_t] == 0)
+            {
+                t_hash[*it_t] = *it_s;
+            }
+            else if(t_hash[*it_t] != *it_s)
+            {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+};
