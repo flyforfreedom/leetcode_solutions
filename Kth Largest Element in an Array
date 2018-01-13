@@ -1,0 +1,65 @@
+int partition(int* nums, int left, int right, int pivotIndex)
+{
+   if(!nums || left >= right) return left;
+   if(pivotIndex < left || pivotIndex > right) return -1;
+   
+   int temp = nums[right];
+   nums[right] = nums[pivotIndex];
+   nums[pivotIndex] = temp;
+   
+   int storeIndex = left;
+   
+   for(int i = left; i < right; ++i)
+   {
+      if(nums[i] > nums[right])
+      {
+         int temp = nums[i];
+         nums[i] = nums[storeIndex];
+         nums[storeIndex++] = temp;
+      }
+   }
+
+   temp = nums[right];
+   nums[right] = nums[storeIndex];
+   nums[storeIndex] = temp;
+
+   return storeIndex;
+}       
+       
+
+int qselect(int* nums, int left, int right, int n)
+{
+   if(!nums) return -1;
+   if(left == right) return nums[left];
+
+   int pivotIndex = left/2 + right/2;
+
+   pivotIndex = partition(nums, left, right, pivotIndex);
+
+   //printf("pivotIndex is:%d\n", pivotIndex);
+
+   if(-1 == pivotIndex) 
+   { 
+       return 0;
+   }
+   else if(n == pivotIndex+1)
+   {
+       return nums[pivotIndex];
+   }
+   else if(n < pivotIndex+1)
+   {
+       return qselect(nums, left, pivotIndex-1, n);
+   }
+   else
+   {
+       return qselect(nums, pivotIndex+1, right, n);
+   }
+}
+
+int findKthLargest(int* nums, int numsSize, int k) {
+
+   if(!nums) return 0;
+   if(numsSize ==1) return nums[0];
+
+   return qselect(nums, 0, numsSize-1, k);
+}
