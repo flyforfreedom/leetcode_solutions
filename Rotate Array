@@ -1,0 +1,30 @@
+void rotate(int* nums, int numsSize, int k) {
+    
+    if(!nums || numsSize <= 0 || k <=0) return;
+    
+    if(k>=numsSize) k = k%numsSize; //Struggle for a long time here
+    
+    int* pTemp = malloc(numsSize*sizeof(int));
+    
+    if(!pTemp) return;
+    
+    int l = 0;
+    
+    for(int i = numsSize-k; i < numsSize; i++, l++){
+        *(pTemp+l) = *(nums+i);
+    }
+    
+    
+    for(int j = 0; j < numsSize-k; j++, l++){
+        *(pTemp+l) = *(nums+j);
+    }
+    
+    for(int m = 0; m < numsSize; m++){
+        *(nums+m) = *(pTemp+m);
+    }
+    
+    for(int e = 0; e < numsSize; e++)
+       printf(" %d\n", *(nums+e));
+
+    free(pTemp);
+}
