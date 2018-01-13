@@ -1,0 +1,53 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+struct ListNode* merge(struct ListNode* l1, struct ListNode* l2)
+{
+    if(l1 == NULL)  return l2;
+    if(l2 == NULL)  return l1;
+    
+    if(l1->val < l2->val)
+    {
+        l1->next = merge(l1->next, l2);
+        return l1;
+    }
+    else
+    {
+        l2->next = merge(l1, l2->next);
+        return l2;
+    }
+}
+ 
+struct ListNode* sortList(struct ListNode* head) {
+    
+        if(head == NULL){
+            return head;
+        }
+        if(head->next == NULL){
+            return head;
+        }
+
+        //p1 move 1 step every time, p2 move 2 step every time, pre record node before p1
+        struct ListNode* p1 = head;
+        struct ListNode* p2 = head;
+        struct ListNode* pre = head;
+
+        while(p2 != NULL && p2->next != NULL){
+            pre = p1;
+            p1 = p1->next;
+            p2 = p2->next->next;
+        }
+        //change pre next to null, make two sub list(head to pre, p1 to p2)
+        pre->next = NULL;
+
+        //handle those two sub list
+        struct ListNode* h1 = sortList(head);
+        struct ListNode* h2 = sortList(p1);
+
+        return merge(h1, h2); 
+}
