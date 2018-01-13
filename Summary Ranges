@@ -1,0 +1,59 @@
+class Solution {
+public:
+    vector<string> summaryRanges(vector<int>& nums) {
+        
+        vector<string> v_ret;
+        
+        if(nums.size() == 0) return v_ret;
+        
+        sort(nums.begin(), nums.end());
+        
+        vector<int>::iterator iter = nums.begin();
+        
+        int begin = *iter;
+        
+        while(iter != nums.end())
+        {
+            if(iter+1 == nums.end())
+            {
+                if(begin == *iter)
+                {
+                    v_ret.push_back(to_string(begin));
+                }
+                else
+                {
+                    string str = to_string(begin);
+                    str = str + "->";
+                    str = str + to_string(*iter);
+                    v_ret.push_back(str);
+                }
+                
+                return v_ret;
+            }
+            else
+            {
+                if(*iter+1 == *(iter+1))
+                {
+                    iter++;
+                }
+                else
+                {
+                    if(begin == *iter)
+                    {
+                       v_ret.push_back(to_string(begin));
+                    }
+                    else
+                    {
+                       string str = to_string(begin);
+                       str = str + "->";
+                       str = str + to_string(*iter);
+                       v_ret.push_back(str);
+                    }
+                    
+                    begin = *(iter+1);
+                    iter++;
+                }
+            }
+        }
+    }
+};
