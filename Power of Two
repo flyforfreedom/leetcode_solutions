@@ -1,0 +1,24 @@
+bool isPowerOfTwo(int n) {
+
+   if(n <= 0) return false;
+
+   int bits = sizeof(int)*8;
+
+   bool bPower = false;
+
+   while(bits-- > 1)
+   {
+      if(n & 1 && bPower)
+      {
+         return false;
+      }
+      else if(n & 1)
+      {
+         bPower = true;
+      }
+
+      n = n >> 1;
+   }
+
+   return bPower;
+}
