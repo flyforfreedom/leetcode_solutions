@@ -1,0 +1,63 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+void reorderList(struct ListNode* head) {
+    
+   if(!head || !head->next ||!head->next->next) return;
+
+   struct ListNode* p1 = head;
+
+   int count = 0;
+   while(p1)
+   {
+      count++;
+      p1 = p1->next;
+   }
+
+   int h = 0;
+   if(count%2 == 0) h = count / 2;
+   else h = count / 2 + 1;
+   
+   printf("h:%d\n", h);
+
+   struct ListNode* p2 = head;
+
+   while(h-- > 1)
+   {
+      p2 = p2->next;
+   }
+   
+   struct ListNode* pnext = p2->next;
+   p2->next = NULL;
+   p2 = pnext;
+   
+   if(!p2) return;
+   
+   struct ListNode* prev = NULL;
+
+   while(p2)
+   {
+      struct ListNode* pnext = p2->next;
+      p2->next = prev;
+      prev = p2;
+      p2 = pnext;
+   }
+
+   p2 = prev;
+   p1 = head;
+
+   while(p1 && p2)
+   {
+      struct ListNode* pnext = p2->next;
+      p2->next = p1->next;
+      p1->next = p2;
+      p1 = p2->next;
+      p2 = pnext;
+   }
+    
+   printf("aaaa\n");
+}
