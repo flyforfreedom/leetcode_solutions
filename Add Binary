@@ -1,0 +1,114 @@
+char* addBinary(char* a, char* b) {
+    
+    if(!a) return b;
+    if(!b) return a;
+    
+    int len_a = strlen(a);
+    int len_b = strlen(b);
+    
+    int min_len;
+    int max_len;
+   
+    if(len_a < len_b) 
+    {  
+       min_len = len_a;
+       max_len = len_b;
+    }
+    else
+    {
+       min_len = len_b;
+       max_len = len_a;
+    }
+    
+    char* pa = a + len_a -1;
+    char* pb = b + len_b -1;
+    char* pSum = (char*)malloc(sizeof(char)*(max_len+2));
+    pSum[max_len+1] = 0;
+    char* pSum_end = pSum + max_len;
+    
+    char carry = '0';
+    
+    int loop = max_len;
+    
+    while(--loop>=0)
+    {
+        char bitSum = '0';
+        
+        if(min_len>0){
+            if(carry == '1')
+            {
+                if(*pa=='1'&&*pb=='1'){
+                    *pSum_end = '1';
+                }
+                else if(*pa=='1' || *pb=='1'){
+                    *pSum_end = '0';
+                } 
+                else 
+                { 
+                    *pSum_end = '1';
+                    carry = '0';
+                }
+            }
+            else
+            {
+                if(*pa=='1' && *pb=='1'){
+                    *pSum_end = '0';
+                    carry = '1';
+                    printf("get here1\n");
+                }
+                else if(*pa == '1' || *pb == '1')
+                {
+                    printf("get here2\n");
+                    *pSum_end = '1';
+                }
+                else
+                {
+                    *pSum_end  = '0';
+                    printf("get here3\n");
+                }
+            }
+        }
+        else{
+            if(len_a>len_b) bitSum = *pa + carry;
+            else bitSum = *pb + carry;
+            
+            if(bitSum == 98)
+            {
+                *pSum_end = '0';
+                carry = '1';
+            }
+            else
+            {
+                if(bitSum == 97)
+                {
+                    *pSum_end = '1';
+                }
+                else *pSum_end = '0';
+                carry = '0';
+            }
+        }
+
+        pSum_end--;
+        min_len--;
+        pa--;
+        pb--;
+    }
+
+    printf("a: %s\n", a);
+    printf("b: %s\n", b);
+
+    if(carry == '1')
+    {
+        pSum[0] = '1';
+        printf("Sum: %s\n", pSum);
+        return pSum;
+    }
+    else
+    {
+        char* pNewSum = (char*)malloc(sizeof(char)*(max_len+1));
+        strcpy(pNewSum, pSum+1);
+        free(pSum);
+        printf("Sum: %s\n", pNewSum);
+        return pNewSum;
+    }
+}
