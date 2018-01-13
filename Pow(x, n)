@@ -1,0 +1,27 @@
+double myPow(double x, int n) {
+    
+    if(n == 0) return 1;
+    if(n == 1) return x;
+    if(x == 0)  return 0;
+    
+    bool negative = false;
+    
+    if(n < 0) 
+    {
+        negative = true;
+        n = -n;
+    }
+    
+    double temp = myPow(x, n/2);
+
+    if(n%2 == 0)
+    {
+        if(negative) return 1.0/(temp*temp);
+        return temp*temp;
+    }
+    else
+    {
+        if(negative) return 1.0/(temp*temp*x);
+        return temp*temp*x;
+    }
+}
