@@ -1,0 +1,100 @@
+#define MAX_INT 2147483647
+#define MIN_INT -2147483648
+
+int divide(int dividend, int divisor) {
+    
+    if(divisor == 1) return dividend;
+    if(divisor == dividend) return 1;
+    if(divisor == MIN_INT) return 0;
+    if(divisor == -1) 
+    {
+        if(dividend == MIN_INT) return MAX_INT;
+        return -dividend;
+    }
+    
+    bool bNeg = false;
+    int result = 0;
+    
+    if(dividend < 0 && divisor > 0) bNeg = true;
+    if(dividend > 0 && divisor < 0) bNeg = true;
+    
+    if(divisor < 0)   divisor = -divisor;
+    if(dividend < 0) 
+    {
+        printf("dividend: %d\n", dividend);
+        if(dividend == MIN_INT)
+        {
+            dividend += divisor;
+            result++;
+            printf("fuck addOne\n");
+        }
+        dividend = -dividend;
+        printf("dividend: %d\n", dividend);
+    }
+    
+    if(divisor > dividend)
+    {
+        if(bNeg) result = -result;
+        return result;
+    }
+
+    if(divisor == dividend) 
+    {
+        result += 1;
+        if(bNeg) result = -result;
+        return result;
+    }
+    
+    int count = 0;
+    int mid = 0;
+    
+    while(1)
+    {
+        if(mid == 0)
+        {
+            mid += divisor;
+            count++;
+        }
+        else if(mid > 0 && (divisor > MAX_INT - mid))
+        {
+            result += count;
+            break;
+        }
+        else if(mid > 0 && (mid > MAX_INT - mid))
+        {
+            result += count;
+            count = 0;
+            dividend = dividend - mid;
+            if(dividend < divisor) break;
+            mid = 0;
+        }
+        else
+        {
+            if(mid + divisor >= dividend)
+            {
+                result += count;
+                if(mid + divisor == dividend) result++;
+                break;
+            }
+            else if( mid + mid > dividend)
+            {
+                result += count;
+                count = 0;
+                dividend = dividend - mid;
+                if(dividend < divisor) break;
+                mid = 0;
+            }
+            else
+            {
+               mid += mid;
+               count += count;
+            }
+        }
+    }
+    
+    printf("result: %d\n", result);
+
+    if(bNeg) result = -result;
+    
+    return result;
+}
