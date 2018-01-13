@@ -1,0 +1,52 @@
+bool isValid(char* s) {
+    
+    if(!s) return true;
+    
+    int len = strlen(s);
+    
+    char* p = malloc(sizeof(char)*(len+1));
+    
+    p[len] = 0;
+    
+    int i = 0;
+    int index = 0;
+    
+    while(i < len)
+    {
+        if(s[i] == '(' || s[i] == '[' || s[i] == '{')
+        {
+            p[index++] = s[i];
+        }
+        else if(s[i] == ')') 
+        {
+            if(index == 0) goto FALSE;
+            else if(p[index-1] != '(') goto FALSE;
+            else p[--index] = 0;
+        }
+        else if(s[i] == ']')
+        {
+            if(index == 0) goto FALSE;
+            else if(p[index-1] != '[') goto FALSE;
+            else p[--index] = 0;
+        }
+        else if(s[i] == '}')
+        {
+            if(index == 0) goto FALSE;
+            else if(p[index-1] != '{') goto FALSE;
+            else p[--index] = 0;
+        }
+        
+        i++;
+    }
+    
+    if(index == 0) 
+    {
+        free(p);
+        return true;
+    }
+    
+FALSE:
+
+    if(p) free(p);
+    return false;
+}
