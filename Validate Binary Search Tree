@@ -1,0 +1,35 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+ 
+#define -2147483648 INT_MIN
+#define  2147483647 INT_MAX
+
+bool isValid(struct TreeNode* root, int min, int max)
+{
+    if(!root) return true;
+    
+    if(root->val < min) return false;
+    
+    if(root->val > max) return false;
+    
+    if(root->val == INT_MIN && root->left) return false; // Avoid overflow
+    if(root->val == INT_MAX && root->right) return false; // Avoid overflow
+    
+    return isValid(root->left, min, root->val-1) && isValid(root->right, root->val+1, max);
+}
+
+bool isValidBST(struct TreeNode* root) {
+    
+    if(!root) return true;
+    
+    //if(root->left && root->left->val >= root->val) return false;
+    //if(root->right && root->right->val <= root->val) return false;
+
+    return isValid(root, INT_MIN, INT_MAX);
+}
