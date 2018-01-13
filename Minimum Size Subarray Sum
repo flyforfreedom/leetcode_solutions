@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int minSubArrayLen(int s, vector<int>& nums) {
+        
+        if(nums.size() == 0) return 0;
+        
+        vector<int>::iterator iter = nums.begin();
+        
+        int min_len = 0;
+        
+            if(*iter >= s) return 1;
+            else
+            {
+                vector<int>::iterator cursor = iter+1;
+                
+                if(cursor == nums.end()) return 0;
+                
+                int sum = *iter;
+                int len = 1;
+                
+                for(; iter != nums.end() && cursor != nums.end(); )
+                {
+                    sum += *cursor;
+                    len++;
+                    
+                    while(sum >= s) 
+                    { 
+                        if(iter == cursor) return 1;
+                        
+                        if(min_len == 0) min_len = len;
+                        else if(len < min_len) min_len = len;
+                        
+                        sum -= *iter;
+                        iter++;
+                        
+                        len--;
+                    }      
+                    
+                    cursor++;
+                }
+                
+                return min_len;
+            }
+        
+        return min_len;
+    }
+};
